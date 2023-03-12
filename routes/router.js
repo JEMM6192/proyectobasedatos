@@ -49,8 +49,9 @@ router.post('/actualizarEmpleado/:id', empleadosadmin.updateEmpleado) //ruta par
 
 router.get('/mantenimientos', mantenimientosadmin.getMantenimientos)  //ruta para mostrar los mantenimientos
 router.post('/insertarMantenimiento',uploadimage(), mantenimientosadmin.insertMantenimiento) //ruta para insertar un nuevo mantenimiento
-router.post('/eliminarMantenimiento/:id', mantenimientosadmin.deleteMantenimiento) //ruta para eliminar un mantenimiento por parametro @id
-
+router.get('/eliminarMantenimiento/:id', mantenimientosadmin.deleteMantenimiento) //ruta para eliminar un mantenimiento por parametro @id
+router.get('/editarMantenimiento/:id', mantenimientosadmin.editMantenimiento) //ruta para editar un mantenimiento por parametro @id
+router.post('/actualizarMantenimiento/:id', mantenimientosadmin.updateMantenimiento) //ruta para actualizar un mantenimiento por parametro @id
 
 router.get('/',  indexadmin.getDashboard)  //ruta para tener el conteo de registros y los manteniemientos en progreso
 

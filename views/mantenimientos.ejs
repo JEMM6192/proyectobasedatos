@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Pod Talk - About Page</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Sono:wght@200;300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.3/datatables.min.css"/>
+
+
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+    <link href="css/templatemo-pod-talk.css" rel="stylesheet">
+    <!--
+
+TemplateMo 584 Pod Talk
+
+https://templatemo.com/tm-584-pod-talk
+
+-->
+</head>
+
+<body>
+
+    <main>
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+             
+         
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Inicio</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/mantenimientos">Mantenimientos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/empleados">Empleados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cliente">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/vehiculos">Vehiculos</a>
+                        </li>
+                    </ul>
+
+                    <div class="ms-4">
+                        <a href="#section_3" class="btn custom-btn custom-border-btn smoothscroll">Salir</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+        <header class="site-header d-flex flex-column justify-content-center align-items-center">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-12 col-12 text-center">
+
+                        <h2 class="mb-0">Control Mantenimientos</h2>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <button type="button" id="agregar"class="btn btn-outline-light" data-bs-toggle="modal"
+                    data-bs-target="#modalmantenimientos" >Agregar</button>\
+
+                   
+                </div>
+            </div>
+        </header>
+
+        
+
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center ">
+          
+                
+
+          
+            
+
+
+        <div class="table-responsive">
+        <table class="table table-hover table-bordered" id="tablaclientes">
+            <thead>
+                <tr class="text-center align-middle">
+                    <th>#</th> 
+                  <th>cliente</th> 
+                  <th>Empleado asignado</th>
+                  <th>Vehiculo</th>
+                  <th scope="col">Tipo de Mantenimiento</th>
+                  <th scope="col">Descripcion de Servicio</th>
+                  <th scope="col">Fecha de ingreso</th>
+                  <th scope="col">Fecha de Salida</th>
+                  <th scope="col">Estado</th>
+                  <th class="text-center" scope="col">Proximo Mantenimiento</th>
+                  <th class="text-center" scope="col">Cambio de Repuesto</th>
+                  <th scope="col">Foto</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+           
+            <tbody>
+                <% let i=1 %>
+          
+                <% mantenimientos.forEach(mantenimiento => { %>
+                <tr class="text-center align-middle">
+                  <td><%= i++ %></td>
+                  <td><%= mantenimiento.id_cliente %></td>
+                  <td><%= mantenimiento.id_Empleado %></td>
+                  <td><%= mantenimiento.id_Vehiculo %></td>
+                  <td><%= mantenimiento.Tipo_Mantenimiento %></td>
+                  <td><%= mantenimiento.Descripcion_Servicio %></td>
+                  <td><%= mantenimiento.Fecha_Ingreso.toLocaleDateString() %></td>
+                  <td><%= mantenimiento.Fecha_Salida.toLocaleDateString() %></td>
+                  <td><%= mantenimiento.Estado %></td>
+                  <td><%= mantenimiento.Proximo_Mantenimiento.toLocaleDateString() %></td>
+                  <td><%= mantenimiento.Cambio_Repuesto.toLocaleDateString() %></td>
+                  <td><img src="<%= mantenimiento.FotoRuta%>" alt="" width="100px" height="100px"></td>
+                  <td>
+                    <button type="button" class="btn btn-primary editar"  class="btn btn-danger" name="editar" data-id=" <%= mantenimiento.id_Registro%>" >Editar</button>
+                     <a href="/eliminarMantenimiento/<%= mantenimiento.id_Registro%>" class="btn btn-danger">Eliminar</a>
+                  </td>
+                </tr>
+                <% }) %>
+
+     
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="modalmantenimientos" tabindex="-1" role="dialog" aria-labelledby="modalAgregarMantenimientoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAgregarMantenimientoLabel">Agregar Mantenimiento</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form name="mantenimientoForm" action="/insertarMantenimiento" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="row">
+              <!-- Columna 1 -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="id_cliente">ID Cliente</label>
+                  <input type="text" class="form-control" id="id_cliente" name="id_cliente">
+                </div>
+                <div class="form-group">
+                  <label for="id_vehiculo">ID Vehículo</label>
+                  <input type="text" class="form-control" id="id_vehiculo" name="id_vehiculo">
+                </div>
+                <div class="form-group">
+                  <label for="tipo_mantenimiento">Tipo de Mantenimiento</label>
+                  <input type="text" class="form-control" id="tipo_mantenimiento" name="tipo_mantenimiento">
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion_servicio">Descripción del Servicio</label>
+                    <textarea class="form-control" id="descripcion_servicio" name="descripcion_servicio" rows="3"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="proximo_mantenimiento">Próximo Mantenimiento</label>
+                    <input type="date" class="form-control" id="proximo_mantenimiento" name="proximo_mantenimiento">
+                  </div>
+              </div>
+              <!-- Columna 2 -->
+              
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="id_empleado">Empleado: </label>
+                  <select class="form-control" id="id_empleado" name="id_empleado">
+                    <% empleados.forEach(empleado => { %>
+                  <option value="<%=empleado.id_empleado %>"><%=empleado.id_empleado %></option>
+                  <% }) %>
+                </select>
+                </div>
+              
+
+                <div class="form-group">
+                  <label for="fecha_ingreso">Fecha de Ingreso</label>
+                  <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso">
+                </div>
+                <div class="form-group">
+                  <label for="fecha_salida">Fecha de Salida</label>
+                  <input type="date" class="form-control" id="fecha_salida"  name="fecha_salida">
+                </div>
+
+                
+                    <div class="form-group">
+                      <label class="form-label">Estado</label>
+                      <select class="form-select" id="estado" name="estado">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En Progreso">En Progreso</option>
+                        <option value="Completado">Completado</option>
+                       
+                      </select>
+                   
+
+              </div>
+              <div class="form-group">
+                <label for="cambio_repuesto">Cambio de Repuesto</label>
+                <input type="date"  class="form-control" id="cambio_repuesto" name="cambio_repuesto">
+              </div>
+              <div class="form-group">
+                <label for="foto">Foto</label>
+                <input type="file" class="form-control-file" id="foto"  name="foto" accept=".jpg">
+              </div>
+            </div>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+    
+    
+
+
+
+
+
+
+
+
+
+<section class="trending-podcast-section section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="section-title-wrap mb-5">
+                    <h4 class="section-title">En Mantenimiento</h4>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-12 mb-4 mb-lg-0">
+                <div class="custom-block custom-block-full">
+                    <div class="custom-block-image-wrap">
+                        <a href="detail-page.html">
+                            <img src="https://pictures.dealer.com/l/lamborghinidallas/1694/8f4cdc2a434e958e4466b52f0781a612x.jpg?impolicy=downsize&w=568" class="custom-block-image img-fluid" alt="">
+                        </a>
+                    </div>
+                    <div class="custom-block-info">
+                        <h5 class="mb-2 text-center">
+                            <a href="detail-page.html">
+                                lamborghini aventador
+                            </a>
+                        </h5>
+                        <div class="profile-block d-flex">
+                            <p>Encargado: <strong>Francisco Lopez</strong> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          
+            
+
+<section class="trending-podcast-section section-padding">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="section-title-wrap mb-5">
+                    <h4 class="section-title">Proximos Mantenimientos</h4>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-12 mb-4 mb-lg-0">
+                <div class="custom-block custom-block-full">
+                    <div class="custom-block-image-wrap">
+                        <a href="detail-page.html">
+                            <img src="https://pictures.dealer.com/l/lamborghinidallas/1694/8f4cdc2a434e958e4466b52f0781a612x.jpg?impolicy=downsize&w=568" class="custom-block-image img-fluid" alt="">
+                        </a>
+                    </div>
+                    <div class="custom-block-info">
+                        <h5 class="mb-2 text-center">
+                            <a href="detail-page.html">
+                                lamborghini aventador
+                            </a>
+                        </h5>
+                        <div class="profile-block text-center">
+                            <p>Fecha: <strong>12/4/2023</strong> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          
+         
+
+
+
+        </div>
+    </div>
+</section>
+       
+    </main>
+
+
+    <footer>
+       
+    </footer>
+
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.3/datatables.js"></script>
+    <script>
+        $(document).ready(function() {
+          $('#tablaclientes').DataTable( {
+              language: {
+                  url: 'http://cdn.datatables.net/plug-ins/1.13.3/i18n/es-ES.json'
+              }
+          } );
+        } );
+        </script>
+
+</body>
+<footer></footer>
+
+</html>

@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>empleados</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Sono:wght@200;300;400;500;700&display=swap"
+        rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.3/datatables.min.css"/>
+   
+
+
+
+    <link rel="stylesheet" href="css/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+ 
+     <link rel="stylesheet" href="css/owl.theme.default.min.css"> 
+ 
+    <link href="css/templatemo-pod-talk.css" rel="stylesheet"> 
+    <!--
+
+TemplateMo 584 Pod Talk
+
+https://templatemo.com/tm-584-pod-talk
+
+-->
+</head>
+
+<body>
+
+    <main>
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                
+
+         
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Inicio</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/mantenimientos">Mantenimientos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/empleados">Empleados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cliente">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/vehiculos">Vehiculos</a>
+                        </li>
+                    </ul>
+
+                    <div class="ms-4">
+                        <a href="#section_3" class="btn custom-btn custom-border-btn smoothscroll">Salir</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+        <header class="site-header d-flex flex-column justify-content-center align-items-center">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-12 col-12 text-center">
+
+                        <h2 class="mb-0">Empleados</h2>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <button type="button" id="agregar"class="btn btn-outline-light agregar" data-bs-toggle="modal"
+                    data-bs-target="#modalempleados" >Agregar</button>\
+
+                   
+                </div>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center ">
+          
+
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered" id="tablaempleados">
+            <thead>
+                <tr class="text-center align-middle">
+                  <th hidden>idcliente</th> 
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apeliido</th>
+                  <th class="text-center" scope="col">DNI</th>
+                  <th class="text-center" scope="col">Telefono</th>
+                  <th class="text-center" scope="col">Direccion</th>
+                  <th class="text-center" scope="col">Fecha de nacimiento</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+           
+            <tbody>
+             
+       <% let i=1 %>
+     <% empleados.forEach((empleados)=>{ %>
+     <tr class="text-center align-middle">
+      <td hidden></td> 
+      <td><%= i++ %></td>
+   
+      <td><%= empleados.Nombre  %></td>
+      <td><%= empleados.Apellido %></td>
+      <td><%= empleados.DNI %></td>
+      <td><%= empleados.Telefono %></td>
+      <td><%= empleados.Direccion %></td>
+      <td><%= empleados.fecha_nacimiento.toLocaleDateString() %></td>
+      <td>
+        <button type="button" class="btn btn-primary editar"  class="btn btn-danger" name="editar" data-id="<%=  empleados.id_empleado %>" >Editar</button>
+         <a href="/eliminarEmpleado/<%= empleados.id_empleado%>" class="btn btn-danger">Eliminar</a>
+      </td>
+       <% }) %>
+    
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="modalempleados" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static"  aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content mx-auto">
+      <div class="modal-header">
+        <h5 class="modal-title text-center" id="titulo" name="titulo">Agregar Empleados</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/insertarEmpleado" method="post" >
+        <div class="row">
+          <div class="mb-3 col-12">
+            <label for="nombre" class="form-label">Nombre: </label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="apellido" class="form-label">Apellido: </label>
+            <input type="text" class="form-control" id="apellido" name="apellido" required>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="dni" class="form-label">DNI: </label>
+            <input type="int" class="form-control" id="dni" name="dni" required>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="telefono" class="form-label">Teléfono: </label>
+            <input type="int" class="form-control" id="telefono" name="telefono" required>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="direccion" class="form-label">Dirección: </label>
+            <input type="text" class="form-control" id="direccion" name="direccion" required>
+          </div>
+          <div class="mb-3 col-12">
+            <label for="fecha" class="form-label">Fecha de Nacimiento:</label>
+            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+       
+    </main>
+
+
+    <footer>
+       
+    </footer>
+
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.3/datatables.js"></script>
+    <script>
+        $(document).ready(function() {
+          $('#tablaempleados').DataTable( {
+              language: {
+                  url: 'http://cdn.datatables.net/plug-ins/1.13.3/i18n/es-ES.json'
+              }
+          } );
+        } );
+        </script>
+
+<script>
+ $(document).ready(function() {
+  $('.editar').click(function() {
+    var id = $(this).data('id'); // Se obtiene el ID del botón "editar"
+    $.ajax({
+        url: "/editarEmpleado/" + id,
+        method: "GET",
+      success: function(data) {
+  
+      $('#nombre').val(data.Nombre);
+      $('#apellido').val(data.Apellido);
+      $('#dni').val(data.DNI);
+      $('#telefono').val(data.Telefono);
+      $('#direccion').val(data.Direccion);
+      $('#fecha_nacimiento').val(data.fecha_nacimiento);
+      $("form").attr("action", "/actualizarEmpleado/" + id); 
+      $('#titulo').text("Editar Empleados");
+      $('#modalempleados').modal('show'); 
+      //mostrar modal
+    }
+  });
+  });
+});
+</script>
+  
+ 
+<script>
+  $('#modalempleados').on('hidden.bs.modal', function () {
+    $(this).find('form')[0].reset(); 
+    $("#titulo").text("Agregar Empleados");
+    $("form").attr("action", "/insertarEmpleado");
+  });
+</script>
+
+</body>
+<footer></footer>
+
+</html>

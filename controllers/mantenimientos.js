@@ -13,9 +13,7 @@ const getMantenimientos = async (req, res) => {
             pool.request().query("SELECT * FROM mantenimientos"),
             pool.request().query("SELECT * FROM empleados"),
             pool.request().query("SELECT mantenimientos.FotoRuta, vehiculos.Marca, mantenimientos.Proximo_Mantenimiento FROM vehiculos  JOIN mantenimientos ON vehiculos.id_vehiculo = mantenimientos.id_Vehiculo"),
-        
-    
-        
+
           ]);
        const mantenimientos = mantenimientosResult.recordset;
       {
@@ -143,7 +141,40 @@ const deleteMantenimiento = async (req, res) => {
     }
   }
 
+  //actualizar solo la imagen del mantenimiento medinate el id en switalert2
+  const updateFoto = async (req, res) => {
+    const { fotoNombre, fotoRuta } = req.body;
+    const id_registro = req.params.id;
+    try {
+      const pool = await conexion();
+      await pool.request()
+        .input('id_Registro', id_registro)
+        .input('FotoNombre', sql.VarChar, fotoNombre)
+        .input('FotoRuta', sql.VarChar, fotoRuta)
+        .query('UPDATE mantenimientos SET FotoNombre = @fotoNombre, FotoRuta = @fotoRuta WHERE id_Registro = @id_registro');
+      res.redirect('/mantenimientos');
+      console.log("mantenimiento actualizado"); 
+    } catch (error) {
+      res.send(error.message);
+      console.log(error.message);
+    }
+  }
+
+  //obtener la imagen el vehiculo y el nombre del empleado asignado al mantenimiento  
+  const getclienteMantenimientos = async (req, res) => {
+
+    try {
+        const pool = await conexion();
+        const result = await pool.request()
+        .query("SELECT mantenimientos.FotoRuta, vehiculos.Marca vehiculos.Marca FROM vehiculos  JOIN mantenimientos ON vehiculos.id_vehiculo = mantenimientos.id_Vehiculo WHERE mantenimientos.Estado = 'En progreso'");
+    res.render('mantenimientos', { mantenimientos: result.recordset});
+    } catch (error) {
+    res.send(error.message);
+  console.log(error.message);
+    }
+  }
+
 
 
 //exportar las funciones
-module.exports = { getMantenimientos ,insertMantenimiento, editMantenimiento, updateMantenimiento , deleteMantenimiento}
+module.exports = { getMantenimientos ,insertMantenimiento, editMantenimiento, updateMantenimiento , deleteMantenimiento,updateFoto,getclienteMantenimientos}

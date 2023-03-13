@@ -149,7 +149,8 @@ https://templatemo.com/tm-584-pod-talk
                   <td>
                     <button type="button" class="btn btn-primary editar"  class="btn btn-danger" name="editar" data-id="<%= mantenimiento.id_Registro%>" >Editar</button>
                      <a href="/eliminarMantenimiento/<%= mantenimiento.id_Registro%>" class="btn btn-danger">Eliminar</a>
-                  </td>
+                     <button id="btn-adjuntar-imagen" data-id="<%= mantenimiento.id_Registro%>"  class="btn btn-outline-light"> imagen</button>
+                    </td>
                 </tr>
                 <% }) %>
 
@@ -293,38 +294,6 @@ https://templatemo.com/tm-584-pod-talk
 
 
 
-
-<section class="trending-podcast-section section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-12">
-                <div class="section-title-wrap mb-5">
-                    <h4 class="section-title">En Mantenimiento</h4>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-12 mb-4 mb-lg-0">
-                <div class="custom-block custom-block-full">
-                    <div class="custom-block-image-wrap">
-                        <a href="detail-page.html">
-                            <img src="https://pictures.dealer.com/l/lamborghinidallas/1694/8f4cdc2a434e958e4466b52f0781a612x.jpg?impolicy=downsize&w=568" class="custom-block-image img-fluid" alt="">
-                        </a>
-                    </div>
-                    <div class="custom-block-info">
-                        <h5 class="mb-2 text-center">
-                            <a href="detail-page.html">
-                                lamborghini aventador
-                            </a>
-                        </h5>
-                        <div class="profile-block d-flex">
-                            <p>Encargado: <strong>Francisco Lopez</strong> </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </section>
-
-
           
          
 
@@ -345,7 +314,7 @@ https://templatemo.com/tm-584-pod-talk
     <!-- JAVASCRIPT FILES -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/custom.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.3/datatables.js"></script>
@@ -393,6 +362,7 @@ https://templatemo.com/tm-584-pod-talk
           $("form").attr("action", "/insertarMantenimiento");
         });
       </script> 
+
 
 
 

@@ -12,7 +12,9 @@ const vehiculosadmin = require('../controllers/vehiculos')
 const empleadosadmin = require('../controllers/empleados')
 const mantenimientosadmin = require('../controllers/mantenimientos')
 const indexadmin = require('../controllers/index')
-const uploadimage = require('../controllers/subirimagen')
+const usuariosadmin = require('../controllers/usuarios')
+const uploadimage = require('../controllers/subirimagen');
+const { render } = require('ejs');
 
 
 
@@ -54,7 +56,13 @@ router.get('/editarMantenimiento/:id', mantenimientosadmin.editMantenimiento) //
 router.post('/actualizarMantenimiento/:id', mantenimientosadmin.updateMantenimiento) //ruta para actualizar un mantenimiento por parametro @id
 
 router.get('/',  indexadmin.getDashboard)  //ruta para tener el conteo de registros y los manteniemientos en progreso
+//ruta para mostrar el login y renderizar la vista desde aqui
+router.get('/login', (req, res)=>{
+    res.render('login')
+})
 
-
+router.get('/registro', (req, res)=>{
+    res.render('registro')
+})
 
 module.exports = router;

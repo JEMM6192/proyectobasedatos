@@ -6,22 +6,33 @@ const bcrypt = require('bcrypt');
 
 //consulta para registrar un nuevo usuario con nombredeusuario contraseña y rol y encriptar la contraseña   
 const insertUsuario = async (req, res) => {
-    const { nombre_usuario, contraseña, rol } = req.body;
+    const { nombre_usuario, contraseña, rol, id_cliente, id_empleado} = req.body;
     try {
       const pool = await conexion();
       const hash = await bcrypt.hash(contraseña, 10); // generar hash de la contraseña
-      await pool.request()
+      
+      let query;
+      if(rol === 'Cliente') {
+        query = 'INSERT INTO Usuarios (nombre_usuario, contraseña, rol, id_cliente) VALUES (@nombre_usuario, @contraseña, @rol, @id_cliente)';
+      } else if(rol === 'Empleado') {
+        query = 'INSERT INTO Usuarios (nombre_usuario, contraseña, rol, id_empleado) VALUES (@nombre_usuario, @contraseña, @rol, @id_empleado)';
+      } else {
+        query = 'INSERT INTO Usuarios (nombre_usuario, contraseña, rol) VALUES (@nombre_usuario, @contraseña, @rol)';
+      }
+      
+      await pool.request() // ejecutar la consulta
         .input('nombre_usuario', sql.VarChar, nombre_usuario)
         .input('contraseña', sql.VarChar, hash) // usar la contraseña cifrada
         .input('rol', sql.VarChar, rol)
-        .query('INSERT INTO usuarios (nombre_USUARIO, contraseña, rol) VALUES (@nombre_usuario, @contraseña, @rol)');
+        .input('id_cliente', sql.Int, id_cliente)
+        .input('id_empleado', sql.Int, id_empleado)
+        .query(query);
       res.redirect('/login');
     } catch(error) {
       res.status(500);
       res.send(error.message);
     }
   }
-
 
   const login = async (req, res) => {
     const { nombre_usuario, contraseña } = req.body;

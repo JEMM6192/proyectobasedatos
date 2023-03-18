@@ -61,27 +61,18 @@ const insertUsuario = async (req, res) => {
               break;
             case 'Cliente':
              
-              const result2 = await pool.request()
+              await pool.request()
               .input('id', sql.Int, usuario.id_cliente)
               .query('SELECT * FROM clientes WHERE id = @id');
-              const cliente = result2.recordset[0]; 
-              //enviar el nombre de usuario a la vista  
-              
-
-              res.locals.nombreCliente = cliente.Nombre;
-              res.locals.nombre_usuario = usuario.nombre_usuario;
-              
               res.redirect(303, '/mantenimientosclientes/' + usuario.id_cliente);
               break;
     
             case 'Empleado': 
-              const result3 = await pool.request()
+              await pool.request()
               .input('id_empleado', sql.Int, usuario.id_empleado)
               .query('SELECT * FROM empleados WHERE id_empleado = @id_empleado');
-              const empleado = result3.recordset[0];
-              res.redirect('/manteninmientoempleado/'+usuario.id_empleado, {nombre : empleado.nombre, id_empleado : user.id_empleado});
-              
-              
+              res.redirect(303, '/mantenimientosempleados/' + usuario.id_empleado);
+
               break;
             default:
               res.send('Rol no válido');

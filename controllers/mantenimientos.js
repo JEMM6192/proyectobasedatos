@@ -168,7 +168,7 @@ const deleteMantenimiento = async (req, res) => {
       const pool = await conexion();
       const [mantenimientosResult, infousuario] = await Promise.all([
         pool.request().input('id_cliente', id).query('SELECT * FROM mantenimientos WHERE id_cliente = @id_cliente'),
-        pool.request().input('id_usuario', id).query('SELECT nombre_usuario FROM usuarios WHERE id_usuario = @id_usuario'), 
+        pool.request().input('id_cliente', id).query('SELECT nombre_usuario FROM usuarios WHERE id_cliente = @id_cliente'), 
       ]);
       const mantenimiento = mantenimientosResult.recordset;
       const usuario = infousuario.recordset[0];
@@ -180,8 +180,47 @@ const deleteMantenimiento = async (req, res) => {
     }
   }
 
+const getMantenimientoEmpleado = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const pool = await conexion();
+      const [mantenimientosResult, infousuario] = await Promise.all([
+        pool.request().input('id_Empleado', id).query('SELECT * FROM mantenimientos WHERE id_Empleado = @id_Empleado'),
+        pool.request().input('id_empleado', id).query('SELECT nombre_usuario FROM usuarios WHERE id_empleado = @id_empleado'),
+      ]);
+      const mantenimiento = mantenimientosResult.recordset;
+      const usuario = infousuario.recordset[0];
+      console.log(usuario);
+      res.render('mantenimientosempleados', { mantenimiento, usuario });
+    } catch (error) {
+      res.send(error.message);
+      console.log(error.message);
+    }
+  }
 
+  const UpdateMantenimientoEmpleado = async (req, res) => {
+    const {id_empleado, tipo_mantenimiento, descripcion_servicio, fecha_salida, estado, proximo_mantenimiento, cambio_repuesto } = req.body;
+    const id_registro = req.params.id;
+    try {
+      const pool = await conexion();
+      await pool.request()
+        .input('id_Registro', id_registro)
+        
+        .input('Tipo_Mantenimiento', sql.VarChar, tipo_mantenimiento)
+        .input('Descripcion_Servicio', sql.VarChar, descripcion_servicio)
+        .input('Fecha_Salida', sql.Date, fecha_salida)
+        .input('Estado', sql.VarChar, estado)
+        .input('Proximo_Mantenimiento', sql.Date, proximo_mantenimiento)
+        .input('Cambio_Repuesto', sql.Date, cambio_repuesto)
+        .query('UPDATE mantenimientos SET  Tipo_Mantenimiento = @tipo_mantenimiento, Descripcion_Servicio = @descripcion_servicio, Fecha_Salida = @fecha_salida, Estado = @estado, Proximo_Mantenimiento = @proximo_mantenimiento, Cambio_Repuesto = @cambio_repuesto WHERE id_Registro = @id_registro');
+      res.redirect('/mantenimientosempleados/'+ id_empleado);
+      console.log("mantenimiento actualizado");
+    } catch (error) {
+      res.send(error.message);
+      console.log(error.message);
+    }
+  }
 
 
 //exportar las funciones
-module.exports = { getMantenimientos ,insertMantenimiento, editMantenimiento, updateMantenimiento , deleteMantenimiento,updateFoto,getMantenimientocliente}
+module.exports = { getMantenimientos ,insertMantenimiento, editMantenimiento, updateMantenimiento , deleteMantenimiento,updateFoto,getMantenimientocliente , getMantenimientoEmpleado, UpdateMantenimientoEmpleado}

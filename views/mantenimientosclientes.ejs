@@ -68,7 +68,7 @@ https://templatemo.com/tm-584-pod-talk
 
                     <div class="col-lg-12 col-12 text-center">
 
-                        <h2 class="mb-0">Control Mantenimientos</h2>
+                        <h2 class="mb-0">Mantenimientos</h2>
                     </div>
             </div>
 
@@ -141,12 +141,12 @@ https://templatemo.com/tm-584-pod-talk
                     <h4 class="section-title">Proximos Mantenimientos</h4>
                 </div>
             </div>
-        
+        <% mantenimiento.forEach(mantenimiento => { %>
             <div class="col-lg-4 col-12 mb-4 mb-lg-0">
                 <div class="custom-block custom-block-full">
                     <div class="custom-block-image-wrap">
                         <a href="detail-page.html">
-                            <img src="" class="custom-block-image img-fluid" alt="">
+                            <img src="http://localhost:3000/<%= mantenimiento.FotoRuta%>" class="custom-block-image img-fluid" alt="">
                         </a>
                     </div>
                     <div class="custom-block-info">
@@ -156,11 +156,12 @@ https://templatemo.com/tm-584-pod-talk
                             </a>
                         </h5>
                         <div class="profile-block text-center">
-                            <p>Fecha: <strong>   </strong> </p>
+                            <p>Fecha: <strong><%= mantenimiento.Proximo_Mantenimiento %></strong> </p>
                         </div>
                     </div>
                 </div>
             </div>
+            <% }) %>
                
         </div>
     </div>

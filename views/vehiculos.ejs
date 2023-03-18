@@ -111,8 +111,9 @@ https://templatemo.com/tm-584-pod-talk
           <table class="table table-hover table-bordered" id="tablaempleados">
             <thead>
                 <tr class="text-center align-middle">
-                  <th hidden>idcliente</th> 
+                 
                   <th scope="col">#</th>
+                  <th >id vehiculo</th>
                   <th scope="col">id cliente</th>
                   <th scope="col">Marca</th>
                   <th class="text-center" scope="col">Modelo</th>
@@ -130,15 +131,16 @@ https://templatemo.com/tm-584-pod-talk
        <% let i=1 %>
      <% vehiculos.forEach((vehiculos)=>{ %>
      <tr class="text-center align-middle">
-      <td hidden></td> 
+   
       <td><%= i++ %></td>
+       <td><%= vehiculos.id_vehiculo%></td>
       <td><%= vehiculos.id_cliente %></td>
       <td><%= vehiculos.Marca %></td>
       <td><%= vehiculos.Modelo %></td>
       <td><%= vehiculos.Anio %></td>
       <td><%= vehiculos.Tipo_Vehiculo%></td>
-      <td style="background-color:<%= vehiculos.Color %>"></td>
-      <td ><%= vehiculos.Placa %></td>
+      <td style="background-color:<%= vehiculos.Color %>"> </td>
+      <td><%= vehiculos.Placa %></td>
       <td><%= vehiculos.Motor %></td>
       <td>
         <button type="button" class="btn btn-primary editar"  class="btn btn-danger" name="editar" data-id="<%=  vehiculos.id_vehiculo%>" >Editar</button>

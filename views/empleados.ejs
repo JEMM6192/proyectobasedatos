@@ -111,8 +111,9 @@ https://templatemo.com/tm-584-pod-talk
           <table class="table table-hover table-bordered" id="tablaempleados">
             <thead>
                 <tr class="text-center align-middle">
-                  <th hidden>idcliente</th> 
+                 
                   <th scope="col">#</th>
+                  <th >Id Empleado</th> 
                   <th scope="col">Nombre</th>
                   <th scope="col">Apeliido</th>
                   <th class="text-center" scope="col">DNI</th>
@@ -128,9 +129,9 @@ https://templatemo.com/tm-584-pod-talk
        <% let i=1 %>
      <% empleados.forEach((empleados)=>{ %>
      <tr class="text-center align-middle">
-      <td hidden></td> 
+     
       <td><%= i++ %></td>
-   
+      <td><%= empleados.id_empleado %> </td> 
       <td><%= empleados.Nombre  %></td>
       <td><%= empleados.Apellido %></td>
       <td><%= empleados.DNI %></td>

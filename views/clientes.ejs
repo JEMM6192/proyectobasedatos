@@ -112,11 +112,12 @@ https://templatemo.com/tm-584-pod-talk
             <thead>
                 <tr class="text-center align-middle">
                   <th scope="col">#</th>
+                  <th scope="col">Id Cliente</th>
                   <th scope="col">Nombre</th>
                   <th scope="col">RTN</th>
                   <th class="text-center" scope="col">Telefono</th>
                   <th class="text-center" scope="col">Direccion</th>
-                  <th class="text-center" scope="col">Fecha</th>
+                  <th class="text-center" scope="col">Fecha de nacimiento</th>
                   <th scope="col">Acciones</th>
                 </tr>
             </thead>
@@ -130,6 +131,7 @@ https://templatemo.com/tm-584-pod-talk
      <tr class="text-center align-middle">
 
       <td> <%= i++ %></td>
+      <td ><%= clientes.id%> </td>
       <td ><%= clientes.Nombre%> </td>
        <td><%= clientes.RTN%> </td>
        <td><%= clientes.Telefono%> </td>
@@ -185,7 +187,7 @@ https://templatemo.com/tm-584-pod-talk
             <input type="text" class="form-control" id="direccion" name="direccion" required>
           </div>
           <div class="mb-3">
-            <label for="fecha" class="form-label">Fecha</label>
+            <label for="fecha" class="form-label">Fecha de nacimiento</label>
             <input type="date" class="form-control" id="fecha" name="fecha" required>
           </div>
       </div>

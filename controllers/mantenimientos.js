@@ -160,9 +160,9 @@ const deleteMantenimiento = async (req, res) => {
     }
   }
 
-  //funcion para obtener los mantenimientos de un cliente en especifico mediante el id del cliente
+  //funcion para obtener los mantenimientos de un cliente en especifico y el nombre del usuario   
   const getMantenimientocliente = async (req, res) => {
-    //obtenr la id pasada por la url
+   
     const id = req.params.id;
     try {
       const pool = await conexion();

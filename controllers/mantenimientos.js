@@ -17,14 +17,20 @@ const getMantenimientos = async (req, res) => {
           ]);
        const mantenimientos = mantenimientosResult.recordset;
       {
-       for (let i = 0; i < mantenimientos.length; i++) {
-        mantenimientos[i].Fecha_Ingreso = mantenimientos[i].Fecha_Ingreso.toISOString().slice(0, 10);
-        mantenimientos[i].Fecha_Salida = mantenimientos[i].Fecha_Salida.toISOString().slice(0, 10);
-        mantenimientos[i].Proximo_Mantenimiento= mantenimientos[i].Proximo_Mantenimiento.toISOString().slice(0, 10);
-       mantenimientos[i].Cambio_Repuesto = mantenimientos[i].Cambio_Repuesto.toISOString().slice(0, 10);
-       }
+        for (let i = 0; i < mantenimientos.length; i++) {
+          mantenimientos[i].Fecha_Ingreso = mantenimientos[i].Fecha_Ingreso ? mantenimientos[i].Fecha_Ingreso.toISOString().slice(0, 10) : ''; //formato de fecha para que se muestre en el input date del formulario
+          mantenimientos[i].Fecha_Salida = mantenimientos[i].Fecha_Salida ? mantenimientos[i].Fecha_Salida.toISOString().slice(0, 10) : '';
+          mantenimientos[i].Proximo_Mantenimiento = mantenimientos[i].Proximo_Mantenimiento ? mantenimientos[i].Proximo_Mantenimiento.toISOString().slice(0, 10) : '';
+          mantenimientos[i].Cambio_Repuesto = mantenimientos[i].Cambio_Repuesto ? mantenimientos[i].Cambio_Repuesto.toISOString().slice(0, 10) : '';
+      }
         const empleados = empleadosResult.recordset;
         const proximomantenimiento = proximomantenimientoresult.recordset;
+
+       
+        for (let i = 0; i < proximomantenimiento.length; i++) {
+          proximomantenimiento[i].Proximo_Mantenimiento = proximomantenimiento[i].Proximo_Mantenimiento ? proximomantenimiento[i].Proximo_Mantenimiento.toISOString().slice(0, 10) : '';
+        }
+
       
         res.render('mantenimientos', {mantenimientos, empleados, proximomantenimiento});
       }
@@ -37,10 +43,12 @@ const getMantenimientos = async (req, res) => {
 //insertar un nuevo mantenimiento y subir la imagen
 const insertMantenimiento = async (req, res) => {
     const { id_cliente,id_empleado,id_vehiculo, tipo_mantenimiento,descripcion_servicio,fecha_ingreso, fecha_salida,estado, proximo_mantenimiento, cambio_repuesto} = req.body;
-    
+    console.log(fecha_salida);
+    console.log(fecha_ingreso);
+
     try {
-        const fotoNombre = req.file.originalname.replace(/\s/g, ''); 
-        const fotoRuta = req.file.path.replace(/\s/g, '');
+        const fotoNombre = req.file.originalname.replace(/\s/g, ''); // Eliminar espacios en blanco del nombre de la imagen
+        const fotoRuta = req.file.path.replace(/\s/g, ''); // Eliminar espacios en blanco de la ruta de la imagen
         const pool = await conexion();
         await pool.request()
         .input('id_cliente', sql.Int, id_cliente)
@@ -49,12 +57,15 @@ const insertMantenimiento = async (req, res) => {
         .input('Tipo_Mantenimiento', sql.VarChar, tipo_mantenimiento)
         .input('Descripcion_Servicio', sql.VarChar, descripcion_servicio)
         .input('Fecha_Ingreso', sql.Date, fecha_ingreso)
-        .input('Fecha_Salida', sql.Date, fecha_salida)
+        .input('Fecha_Salida', sql.Date, fecha_salida || null)
         .input('Estado', sql.VarChar, estado)
-        .input('Proximo_Mantenimiento', sql.Date, proximo_mantenimiento)
-        .input('Cambio_Repuesto', sql.Date, cambio_repuesto)
+        .input('Proximo_Mantenimiento', sql.Date, proximo_mantenimiento || null)
+        .input('Cambio_Repuesto', sql.Date, cambio_repuesto || null)
         .input('FotoNombre', sql.VarChar, fotoNombre)
         .input('FotoRuta', sql.VarChar, fotoRuta)
+
+
+        
         .query('INSERT INTO mantenimientos (id_cliente,id_Empleado,id_Vehiculo,Tipo_Mantenimiento,Descripcion_Servicio,Fecha_Ingreso,Fecha_Salida,Estado,Proximo_Mantenimiento,Cambio_Repuesto,FotoNombre,FotoRuta) VALUES (@id_cliente,@id_empleado,@id_vehiculo,@tipo_mantenimiento,@descripcion_servicio,@fecha_ingreso,@fecha_salida,@estado,@proximo_mantenimiento,@cambio_repuesto,@fotoNombre,@fotoRuta)');
         res.redirect('/mantenimientos');
         console.log("mantenimiento insertado"); 
@@ -77,9 +88,10 @@ const deleteMantenimiento = async (req, res) => {
       const fotoRuta = result.recordset[0].FotoRuta; // Obtener la ruta de la imagen del mantenimiento a eliminar
       console.log(fotoRuta);
       fs.unlinkSync(fotoRuta); // Eliminar la imagen del servidor mediante su ruta 
+
       await pool.request()
-        .input('id_Registro', id_registro)
-        .query('DELETE FROM mantenimientos WHERE id_Registro = @id_registro');
+      .input('id_Registro', id_registro)
+      .query('DELETE FROM mantenimientos WHERE id_Registro = @id_registro');
       res.redirect('/mantenimientos');
       console.log("mantenimiento eliminado"); 
     } catch (error) {
@@ -99,10 +111,12 @@ const deleteMantenimiento = async (req, res) => {
       const mantenimiento = result.recordset[0];  
       
       //obtenemos las fechas de los mantenimientos y convertirlas a formato ISO
-      result.recordset[0].Fecha_Ingreso = result.recordset[0].Fecha_Ingreso.toISOString().slice(0,10);
-      result.recordset[0].Fecha_Salida = result.recordset[0].Fecha_Salida.toISOString().slice(0,10);
-      result.recordset[0].Proximo_Mantenimiento = result.recordset[0].Proximo_Mantenimiento.toISOString().slice(0,10);
-      result.recordset[0].Cambio_Repuesto = result.recordset[0].Cambio_Repuesto.toISOString().slice(0,10);
+      mantenimiento.Fecha_Ingreso = mantenimiento.Fecha_Ingreso ? mantenimiento.Fecha_Ingreso.toISOString().slice(0, 10) : '';
+      mantenimiento.Fecha_Salida = mantenimiento.Fecha_Salida ? mantenimiento.Fecha_Salida.toISOString().slice(0, 10) : '';
+      mantenimiento.Proximo_Mantenimiento = mantenimiento.Proximo_Mantenimiento ? mantenimiento.Proximo_Mantenimiento.toISOString().slice(0, 10) : '';
+      mantenimiento.Cambio_Repuesto = mantenimiento.Cambio_Repuesto ? mantenimiento.Cambio_Repuesto.toISOString().slice(0, 10) : '';
+
+   
     //enviarlos en un json
       res.json(mantenimiento);
     } catch (error) {
@@ -128,10 +142,10 @@ const deleteMantenimiento = async (req, res) => {
         .input('Tipo_Mantenimiento', sql.VarChar, tipo_mantenimiento)
         .input('Descripcion_Servicio', sql.VarChar, descripcion_servicio)
         .input('Fecha_Ingreso', sql.Date, fecha_ingreso)
-        .input('Fecha_Salida', sql.Date, fecha_salida)
+        .input('Fecha_Salida', sql.Date, fecha_salida  || null)
         .input('Estado', sql.VarChar, estado)
-        .input('Proximo_Mantenimiento', sql.Date, proximo_mantenimiento)
-        .input('Cambio_Repuesto', sql.Date, cambio_repuesto)
+        .input('Proximo_Mantenimiento', sql.Date, proximo_mantenimiento || null)
+        .input('Cambio_Repuesto', sql.Date, cambio_repuesto || null)
         .query('UPDATE mantenimientos SET id_cliente = @id_cliente, id_Empleado = @id_empleado, id_Vehiculo = @id_vehiculo, Tipo_Mantenimiento = @tipo_mantenimiento, Descripcion_Servicio = @descripcion_servicio, Fecha_Ingreso = @fecha_ingreso, Fecha_Salida = @fecha_salida, Estado = @estado, Proximo_Mantenimiento = @proximo_mantenimiento, Cambio_Repuesto = @cambio_repuesto WHERE id_Registro = @id_registro');
       res.redirect('/mantenimientos');
       console.log("mantenimiento actualizado");
@@ -143,16 +157,18 @@ const deleteMantenimiento = async (req, res) => {
 
   //actualizar solo la imagen del mantenimiento medinate el id en switalert2
   const updateFoto = async (req, res) => {
-    const { fotoNombre, fotoRuta } = req.body;
+  
     const id_registro = req.params.id;
     try {
+      const fotoNombre = req.file.originalname.replace(/\s/g, '');
+      console.log(fotoNombre); 
+      const fotoRuta = req.file.path.replace(/\s/g, '');
       const pool = await conexion();
       await pool.request()
         .input('id_Registro', id_registro)
         .input('FotoNombre', sql.VarChar, fotoNombre)
         .input('FotoRuta', sql.VarChar, fotoRuta)
         .query('UPDATE mantenimientos SET FotoNombre = @fotoNombre, FotoRuta = @fotoRuta WHERE id_Registro = @id_registro');
-      res.redirect('/mantenimientos');
       console.log("mantenimiento actualizado"); 
     } catch (error) {
       res.send(error.message);
@@ -171,6 +187,17 @@ const deleteMantenimiento = async (req, res) => {
         pool.request().input('id_cliente', id).query('SELECT nombre_usuario FROM usuarios WHERE id_cliente = @id_cliente'), 
       ]);
       const mantenimiento = mantenimientosResult.recordset;
+
+      //formatear las fechas de los mantenimientos
+      mantenimiento.forEach(mantenimiento => {
+        mantenimiento.Fecha_Ingreso = mantenimiento.Fecha_Ingreso ? mantenimiento.Fecha_Ingreso.toISOString().slice(0, 10) : '';
+        mantenimiento.Fecha_Salida = mantenimiento.Fecha_Salida ? mantenimiento.Fecha_Salida.toISOString().slice(0, 10) : '';
+        mantenimiento.Proximo_Mantenimiento = mantenimiento.Proximo_Mantenimiento ? mantenimiento.Proximo_Mantenimiento.toISOString().slice(0, 10) : '';
+        mantenimiento.Cambio_Repuesto = mantenimiento.Cambio_Repuesto ? mantenimiento.Cambio_Repuesto.toISOString().slice(0, 10) : '';
+      });
+
+
+
       const usuario = infousuario.recordset[0];
       console.log(usuario);
       res.render('mantenimientosclientes', { mantenimiento, usuario});
@@ -189,6 +216,17 @@ const getMantenimientoEmpleado = async (req, res) => {
         pool.request().input('id_empleado', id).query('SELECT nombre_usuario FROM usuarios WHERE id_empleado = @id_empleado'),
       ]);
       const mantenimiento = mantenimientosResult.recordset;
+
+      //formatear las fechas de los mantenimientos
+      mantenimiento.forEach(mantenimiento => {
+        mantenimiento.Fecha_Ingreso = mantenimiento.Fecha_Ingreso ? mantenimiento.Fecha_Ingreso.toISOString().slice(0, 10) : '';
+        mantenimiento.Fecha_Salida = mantenimiento.Fecha_Salida ? mantenimiento.Fecha_Salida.toISOString().slice(0, 10) : '';
+        mantenimiento.Proximo_Mantenimiento = mantenimiento.Proximo_Mantenimiento ? mantenimiento.Proximo_Mantenimiento.toISOString().slice(0, 10) : '';
+        mantenimiento.Cambio_Repuesto = mantenimiento.Cambio_Repuesto ? mantenimiento.Cambio_Repuesto.toISOString().slice(0, 10) : '';
+      });
+
+
+
       const usuario = infousuario.recordset[0];
       console.log(usuario);
       res.render('mantenimientosempleados', { mantenimiento, usuario });
@@ -208,10 +246,10 @@ const getMantenimientoEmpleado = async (req, res) => {
         
         .input('Tipo_Mantenimiento', sql.VarChar, tipo_mantenimiento)
         .input('Descripcion_Servicio', sql.VarChar, descripcion_servicio)
-        .input('Fecha_Salida', sql.Date, fecha_salida)
+        .input('Fecha_Salida', sql.Date, fecha_salida || null)
         .input('Estado', sql.VarChar, estado)
-        .input('Proximo_Mantenimiento', sql.Date, proximo_mantenimiento)
-        .input('Cambio_Repuesto', sql.Date, cambio_repuesto)
+        .input('Proximo_Mantenimiento', sql.Date, proximo_mantenimiento || null)
+        .input('Cambio_Repuesto', sql.Date, cambio_repuesto || null)
         .query('UPDATE mantenimientos SET  Tipo_Mantenimiento = @tipo_mantenimiento, Descripcion_Servicio = @descripcion_servicio, Fecha_Salida = @fecha_salida, Estado = @estado, Proximo_Mantenimiento = @proximo_mantenimiento, Cambio_Repuesto = @cambio_repuesto WHERE id_Registro = @id_registro');
       res.redirect('/mantenimientosempleados/'+ id_empleado);
       console.log("mantenimiento actualizado");

@@ -141,7 +141,9 @@ https://templatemo.com/tm-584-pod-talk
                   <td><%= mantenimiento.Tipo_Mantenimiento %></td>
                   <td><%= mantenimiento.Descripcion_Servicio %></td>
                   <td><%= mantenimiento.Fecha_Ingreso %></td>
-                  <td><%= mantenimiento.Fecha_Salida %></td>
+
+                    <td><%= mantenimiento.Fecha_Salida %></td>
+                  
 
 
                   <% if(mantenimiento.Estado == "Pendiente"){ %>
@@ -195,7 +197,7 @@ https://templatemo.com/tm-584-pod-talk
                             </a>
                         </h5>
                         <div class="profile-block text-center">
-                            <p>Fecha: <strong>  <%= proximomantenimiento.Proximo_Mantenimiento.toLocaleDateString() %></strong> </p>
+                            <p>Fecha: <strong>  <%= proximomantenimiento.Proximo_Mantenimiento%></strong> </p>
                         </div>
                     </div>
                 </div>
@@ -263,7 +265,7 @@ https://templatemo.com/tm-584-pod-talk
                 </div>
                 <div class="form-group">
                   <label for="fecha_salida">Fecha de Salida</label>
-                  <input type="date" class="form-control" id="fecha_salida"  name="fecha_salida">
+                  <input type="date" class="form-control" id="fecha_salida" value="NULL" name="fecha_salida">
                 </div>
 
                 

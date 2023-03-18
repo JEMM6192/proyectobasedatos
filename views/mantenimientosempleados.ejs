@@ -120,7 +120,7 @@ https://templatemo.com/tm-584-pod-talk
                   <td><%= mantenimiento.id_Vehiculo %></td>
                   <td><%= mantenimiento.Tipo_Mantenimiento %></td>
                   <td><%= mantenimiento.Descripcion_Servicio %></td>
-                  <td><%= mantenimiento.Fecha_Ingreso %></td>
+                  <td><%= mantenimiento.Fecha_Ingreso%></td>
                   <td><%= mantenimiento.Fecha_Salida %></td>
 
 
@@ -139,7 +139,7 @@ https://templatemo.com/tm-584-pod-talk
                   <td>
                     <button type="button" class="btn btn-primary editar"  class="btn btn-danger" name="editar" data-id="<%= mantenimiento.id_Registro%>" data-bs-toggle="modal"
                       data-bs-target="#modalmantenimientos" >Editar</button>
-                     <button id="btn-adjuntar-imagen" data-id="<%= mantenimiento.id_Registro%>"  class="btn btn-outline-light"> imagen</button>
+                     <button type="button"    class="btn btn-outline-light agregar" name="agregar" data-id="<%= mantenimiento.id_Registro%>"  data-toggle="modal" data-target="#modalfoto"> imagen</button>
                     </td>
                 </tr>
                 <% }) %>
@@ -218,11 +218,37 @@ https://templatemo.com/tm-584-pod-talk
         </form>
         </div>
       </div>
+    </div>
 
    
     
     
-
+<!-- Modal -->
+<div class="modal fade" id="modalfoto" name="modalfoto"tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Actualizar imagen</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="actualizarfoto/" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="image">Seleccionar imagen:</label>
+            <input type="file" class="form-control-file" id="foto" name="foto">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+     
+    </form>
+    </div>
+  </div>
+</div>
 
 
 
@@ -256,7 +282,7 @@ https://templatemo.com/tm-584-pod-talk
               }
           } );
         } );
-        </script>
+    </script>
 
     <script>
         $('#modalmantenimientos').on('hidden.bs.modal', function () {
@@ -282,6 +308,27 @@ https://templatemo.com/tm-584-pod-talk
             $("#titulo").text("Actualizar Manteniemiento");
             $("form").attr("action", "/actualizarMantenimientoEmpleado/"+id);
             $('#modalmantenimientos').modal('show');
+          }   
+       });
+       });
+       });
+</script>
+<script>  
+
+
+
+</script>
+</body>
+<script>
+  $(document).ready(function() {
+   $('.agregar').click(function() {
+     var id = $(this).data('id'); 
+     $.ajax({
+         url: "/editarMantenimiento/" + id,
+         method: "GET",
+       success: function(data) {
+            $("form").attr("action", "/actualizarfoto/"+id);
+            $('#modalfoto').modal('show');
           }   
        });
        });

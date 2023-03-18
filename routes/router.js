@@ -16,7 +16,6 @@ const vehiculosadmin = require('../controllers/vehiculos')
 const empleadosadmin = require('../controllers/empleados')
 const mantenimientosadmin = require('../controllers/mantenimientos')
 const indexadmin = require('../controllers/index')
-const usuariosadmin = require('../controllers/usuarios')
 const uploadimage = require('../controllers/subirimagen');
 const usuarios = require('../controllers/usuarios');
 

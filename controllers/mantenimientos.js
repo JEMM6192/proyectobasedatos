@@ -160,21 +160,28 @@ const deleteMantenimiento = async (req, res) => {
     }
   }
 
-  //obtener la imagen el vehiculo y el nombre del empleado asignado al mantenimiento  
-  const getclienteMantenimientos = async (req, res) => {
-
+  //funcion para obtener los mantenimientos de un cliente en especifico mediante el id del cliente
+  const getMantenimientocliente = async (req, res) => {
+    //obtenr la id pasada por la url
+    const id = req.params.id;
     try {
-        const pool = await conexion();
-        const result = await pool.request()
-        .query("SELECT mantenimientos.FotoRuta, vehiculos.Marca vehiculos.Marca FROM vehiculos  JOIN mantenimientos ON vehiculos.id_vehiculo = mantenimientos.id_Vehiculo WHERE mantenimientos.Estado = 'En progreso'");
-    res.render('mantenimientos', { mantenimientos: result.recordset});
+      const pool = await conexion();
+      const [mantenimientosResult, infousuario] = await Promise.all([
+        pool.request().input('id_cliente', id).query('SELECT * FROM mantenimientos WHERE id_cliente = @id_cliente'),
+        pool.request().input('id_usuario', id).query('SELECT nombre_usuario FROM usuarios WHERE id_usuario = @id_usuario'), 
+      ]);
+      const mantenimiento = mantenimientosResult.recordset;
+      const usuario = infousuario.recordset[0];
+      console.log(usuario);
+      res.render('mantenimientosclientes', { mantenimiento, usuario});
     } catch (error) {
-    res.send(error.message);
-  console.log(error.message);
+      res.send(error.message);
+      console.log(error.message);
     }
   }
 
 
 
+
 //exportar las funciones
-module.exports = { getMantenimientos ,insertMantenimiento, editMantenimiento, updateMantenimiento , deleteMantenimiento,updateFoto,getclienteMantenimientos}
+module.exports = { getMantenimientos ,insertMantenimiento, editMantenimiento, updateMantenimiento , deleteMantenimiento,updateFoto,getMantenimientocliente}

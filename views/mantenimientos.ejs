@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Pod Talk - About Page</title>
+    <title>Mantenimientos</title>
 
     <!-- CSS FILES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,7 +74,7 @@ https://templatemo.com/tm-584-pod-talk
                     </ul>
 
                     <div class="ms-4">
-                        <a href="#section_3" class="btn custom-btn custom-border-btn smoothscroll">Salir</a>
+                        <a href="/cerrarsesion" class="btn custom-btn custom-border-btn smoothscroll">Salir</a>
                     </div>
                 </div>
             </div>
@@ -142,7 +142,17 @@ https://templatemo.com/tm-584-pod-talk
                   <td><%= mantenimiento.Descripcion_Servicio %></td>
                   <td><%= mantenimiento.Fecha_Ingreso %></td>
                   <td><%= mantenimiento.Fecha_Salida %></td>
-                  <td><%= mantenimiento.Estado %></td>
+
+
+                  <% if(mantenimiento.Estado == "Pendiente"){ %>
+                    <td> <span class="badge bg-danger"><%= mantenimiento.Estado %></span> </td>
+                  <% }else if(mantenimiento.Estado == "En Progreso"){ %>
+                    <td> <span class="badge bg-warning"><%= mantenimiento.Estado %></span> </td>
+                  <% }else if(mantenimiento.Estado == "Completado"){ %>
+                    <td> <span class="badge bg-success"><%= mantenimiento.Estado %></span> </td>
+                  <% } %>
+
+
                   <td><%= mantenimiento.Proximo_Mantenimiento %></td>
                   <td><%= mantenimiento.Cambio_Repuesto %></td>
                   <td><img src="<%= mantenimiento.FotoRuta%>" alt="" width="100px" height="100px"></td>
@@ -306,10 +316,7 @@ https://templatemo.com/tm-584-pod-talk
     </main>
 
 
-    <footer>
-       
-    </footer>
-
+  
 
     <!-- JAVASCRIPT FILES -->
     <script src="js/jquery.min.js"></script>
@@ -353,7 +360,7 @@ https://templatemo.com/tm-584-pod-talk
          });
          });
          });
-   </script>
+</script>
     <script>
         $('#modalmantenimientos').on('hidden.bs.modal', function () {
           $(this).find('form')[0].reset(); 
@@ -361,7 +368,7 @@ https://templatemo.com/tm-584-pod-talk
           $("#titulo").text("Agregar Manteniemiento");
           $("form").attr("action", "/insertarMantenimiento");
         });
-      </script> 
+    </script> 
 
 
 

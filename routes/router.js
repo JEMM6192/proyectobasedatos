@@ -5,6 +5,10 @@ const sql = require('mssql')
 const multer=require('multer');
 
 
+router.use('/public', express.static('public'));  
+router.use('/public', express.static(__dirname + '/public'));
+router.use('/Imagenes', express.static('Imagenes')); 
+
 //requerir la conexion a la base de datos
 
 const clientesadmin = require('../controllers/clientes')
@@ -20,7 +24,7 @@ const { render } = require('ejs');
 
 
 
-router.use('/Imagenes', express.static('Imagenes')); 
+
 
 
 router.get('/cliente', (req, res)=>{
@@ -53,12 +57,15 @@ router.post('/insertarMantenimiento',uploadimage(), mantenimientosadmin.insertMa
 router.get('/eliminarMantenimiento/:id', mantenimientosadmin.deleteMantenimiento) //ruta para eliminar un mantenimiento por parametro @id
 router.get('/editarMantenimiento/:id', mantenimientosadmin.editMantenimiento) //ruta para editar un mantenimiento por parametro @id
 router.post('/actualizarMantenimiento/:id', mantenimientosadmin.updateMantenimiento) //ruta para actualizar un mantenimiento por parametro @id
-router.post('actualizarfoto/:id',uploadimage(), mantenimientosadmin.updateFoto) //ruta para actualizar la foto de un mantenimiento por parametro @id    
+router.post('actualizarfoto/:id',uploadimage(), mantenimientosadmin.updateFoto) //ruta para actualizar la foto de un mantenimiento por parametro @id   
+ 
+router.get('/mantenimientosclientes/:id',mantenimientosadmin.getMantenimientocliente) //ruta para mostrar los mantenimientos de un cliente por parametro @id        
 
 router.get('/',  indexadmin.getDashboard)  //ruta para tener el conteo de registros y los manteniemientos en progreso
 
 router.post('/insertarusuario', usuarios.insertUsuario)  //ruta para mostrar los usuarios
-
+router.post('/iniciarSesion', usuarios.login)  //ruta para mostrar los usuarios
+router.get('/cerrarsesion', usuarios.logout)
 
 router.get('/login', (req, res)=>{
     res.render('login')
@@ -67,6 +74,5 @@ router.get('/login', (req, res)=>{
 router.get('/registro', (req, res)=>{
     res.render('registro')
 })
-router.get('/mantenimientosclientes',mantenimientosadmin.getclienteMantenimientos)        
 
 module.exports = router;
